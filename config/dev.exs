@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :app, App.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "rocket",
+  password: "rocket",
   hostname: "localhost",
   database: "app_dev",
   show_sensitive_data_on_connection_error: true,
