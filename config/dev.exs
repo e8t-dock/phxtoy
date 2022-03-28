@@ -25,7 +25,14 @@ config :app, AppWeb.Endpoint,
   secret_key_base: "EklKhMo0kcC78k9RoCiFUPDH7x1Q+CnGojaukeuL+KtvURSbL3np3naV53XAg5pj",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    yarn: [
+      "tailwindcss",
+      "--postcss",
+      "--input=_css/tailwind.css",
+      "--output=css/tailwind.css",
+      cd: Path.expand("../assets", __DIR__)
+    ]
   ]
 
 # ## SSL Support

@@ -21,6 +21,8 @@ defmodule AppWeb.Router do
 
     get "/view/alpine", ViewController, :alpine
     get "/view/tailwind", ViewController, :tailwind
+
+    live "/live/page", PageLive.Index
   end
 
   # Other scopes may use custom stacks.

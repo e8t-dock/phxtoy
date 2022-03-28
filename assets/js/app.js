@@ -1,9 +1,21 @@
 // We import the CSS which is extracted to its own file by esbuild.
 // Remove this line if you add a your own CSS build pipeline (e.g postcss).
-import "../css/app.css";
+
+// import "../css/app.css";
+import "../css/tailwind.css";
+
+// Fontawesome
+
+import "@fortawesome/fontawesome-free";
 
 // require alpinejs
-import "alpinejs";
+// import "alpinejs";
+
+import Alpine from "alpinejs";
+if (!window.Alpine) {
+  window.Alpine = Alpine;
+}
+Alpine.start();
 
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
@@ -32,12 +44,30 @@ import topbar from "../vendor/topbar";
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
+
+// Hooks
+
+let Hooks = {};
+Hooks.PhxToggle = {
+  mounted() {
+    this.el.addEventListener("toggle-change", (event) => {
+      this.pushEvent("toggle-change", event.detail);
+    });
+  },
+};
+
+// init livesocket
+
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
+  hooks: Hooks,
   dom: {
     onBeforeElUpdated(from, to) {
       // add Alpine to window
-      if (from.__x) window.Alpine.clone(from.__x, to);
+      // if (from.__x) window.Alpine.clone(from.__x, to);
+      if (from._x_dataStack) {
+        window.Alpine.clone(from, to);
+      }
     },
   },
 });
