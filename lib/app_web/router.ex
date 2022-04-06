@@ -14,6 +14,10 @@ defmodule AppWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :mini_root do
+    plug :put_root_layout, {AppWeb.LayoutView, :mini_root}
+  end
+
   scope "/", AppWeb do
     pipe_through :browser
 
@@ -23,6 +27,12 @@ defmodule AppWeb.Router do
     get "/view/tailwind", ViewController, :tailwind
 
     live "/live/page", PageLive.Index
+  end
+
+  scope "/app", AppWeb do
+    pipe_through [:browser, :mini_root]
+
+    get "/chat01", Chat01Controller, :index
   end
 
   # Other scopes may use custom stacks.

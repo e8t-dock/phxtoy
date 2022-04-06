@@ -2,6 +2,7 @@
 // Remove this line if you add a your own CSS build pipeline (e.g postcss).
 
 // import "../css/app.css";
+import "../css/chat01.css";
 import "../css/tailwind.css";
 
 // Fontawesome
@@ -19,7 +20,8 @@ Alpine.start();
 
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
-// import "./user_socket.js"
+
+import "./chat01_socket.js";
 
 // You can include dependencies in two ways.
 //
