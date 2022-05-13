@@ -82,10 +82,22 @@ chatInput.addEventListener("keypress", (evt) => {
 // 后端处理数据后推送到前端
 // 不需要判断是否是发送方 自行 diff
 
+const render = (text) => {
+  let linkPattern =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+  let content = text.replaceAll(
+    new RegExp(linkPattern),
+    '<a class="inner-link" href="$&" target="_blank">$&</a>'
+  );
+  return content;
+};
+
 channel.on("new_msg", (payload) => {
   let messageItem = document.createElement("div");
   console.log("on new_msg: ", payload);
-  messageItem.innerHTML = `<p>[${Date()}]</p><div>${payload.body}</div>`;
+  messageItem.innerHTML = `<p>[${Date()}]</p><div>${render(
+    payload.body
+  )}</div>`;
   // messageContainer.appendChild(messageItem);
   messageContainer.insertBefore(messageItem, messageContainer.firstChild);
 });
