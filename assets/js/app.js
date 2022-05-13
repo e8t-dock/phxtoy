@@ -2,7 +2,10 @@
 // Remove this line if you add a your own CSS build pipeline (e.g postcss).
 
 // import "../css/app.css";
+
+// chat01
 import "../css/chat01.css";
+
 import "../css/tailwind.css";
 
 // Fontawesome
