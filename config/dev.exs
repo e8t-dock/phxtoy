@@ -18,7 +18,7 @@ config :app, App.Repo,
 config :app, AppWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {0, 0, 0, 0}, port: System.get_env("PORT", "4000") |> String.to_integer()],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -79,3 +79,9 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# for PROD
+# config :app, uploads_directory: System.get_env("UPLOADS_DIRECTORY")
+
+config :app, uploads_directory: Path.join([File.cwd!(), "priv/static/uploads"])
+# Path.join([Application.app_dir(:app), "priv/static/upload"])

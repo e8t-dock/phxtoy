@@ -22,13 +22,16 @@ defmodule AppWeb.Router do
     get "/view/alpine", ViewController, :alpine
     get "/view/tailwind", ViewController, :tailwind
 
+    resources "/upload", UploadController, only: [:index, :new, :create, :show]
+
     live "/live/page", PageLive.Index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", AppWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", AppWeb do
+    pipe_through :api
+
+    resources "/req", APIReqController, only: [:create, :update]
+  end
 
   # Enables LiveDashboard only for development
   #
