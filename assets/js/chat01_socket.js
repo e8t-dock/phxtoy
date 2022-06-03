@@ -1,8 +1,5 @@
-// NOTE: The contents of this file will only be executed if
-// you uncomment its entry in "assets/js/app.js".
-
 // Bring in Phoenix channels client library:
-import { Socket } from "phoenix";
+import { Socket, Presence } from "phoenix";
 
 // And connect to the path in "lib/app_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
@@ -59,7 +56,18 @@ socket.connect();
 // Let's assume you have a channel with a topic named `room` and the
 // subtopic is its id - in this case 42:
 
-let channel = socket.channel("chat01:lobby", {});
+let getName = (url) => {
+  let urlObj = new URL(url);
+  return urlObj.searchParams.get("name") || "anonymous";
+};
+
+// 从链接参数中读取 name
+let channel = socket.channel("chat01:lobby", {
+  // name: window.location.search.split("=")[1],
+  name: getName(window.location),
+});
+
+// let channel = socket.channel("chat01:lobby", {});
 
 let chatInput = document.querySelector("#chat01-input");
 let messageContainer = document.querySelector("#chat01-messages");
@@ -101,6 +109,23 @@ channel.on("new_msg", (payload) => {
   // messageContainer.appendChild(messageItem);
   messageContainer.insertBefore(messageItem, messageContainer.firstChild);
 });
+
+// presence
+
+let presence = new Presence(channel);
+
+// 回调 onSync(() => trackOnlineUsers(presence))
+const trackOnlineUsers = (presence) => {
+  let response = "";
+  presence.list((id, { metas: [first, ...rest] }) => {
+    console.log(first, rest);
+    let count = rest.length + 1;
+    response += `<br>${id} (count: ${count})`;
+  });
+  document.querySelector("#users").innerHTML = response;
+};
+
+presence.onSync(() => trackOnlineUsers(presence));
 
 channel
   .join()

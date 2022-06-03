@@ -8,6 +8,9 @@ defmodule AppWeb.Router do
     plug :put_root_layout, {AppWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    # custom plugs
+    plug :introspect
+    plug AppWeb.Plugs.Locale, "en"
   end
 
   pipeline :api do
@@ -33,6 +36,16 @@ defmodule AppWeb.Router do
     pipe_through [:browser, :mini_root]
 
     get "/chat01", Chat01Controller, :index
+  end
+
+  def introspect(conn, _opts) do
+    IO.puts("""
+    Verb: #{inspect(conn.method)}
+    Host: #{inspect(conn.host)}
+    Header: #{inspect(conn.req_headers)}
+    """)
+
+    conn
   end
 
   # Other scopes may use custom stacks.
