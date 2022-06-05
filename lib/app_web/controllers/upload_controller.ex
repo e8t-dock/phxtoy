@@ -1,14 +1,14 @@
 defmodule AppWeb.UploadController do
   use AppWeb, :controller
 
-  plug AppWeb.Plugs.BasicAuth
+  # plug AppWeb.Plugs.BasicAuth
 
   def index(conn, _params) do
     render(conn, "new.html")
   end
 
   def show(conn, _params) do
-    render(conn, "new.html")
+    render(conn, "show.html")
   end
 
   def new(conn, _params) do
@@ -34,6 +34,29 @@ defmodule AppWeb.UploadController do
 
   def create(conn, params) do
     IO.inspect(params, label: "POST params")
+
+    files =
+      params
+      |> Enum.filter(fn
+        {_, %Plug.Upload{}} -> true
+        {_, _} -> false
+      end)
+
+    files
+    |> Enum.each(fn {_, file} ->
+      case handle_upload(file) do
+        :ok ->
+          IO.inspect("OK")
+          # json(conn, %{status: "ok"})
+
+          render(conn, "api_done.json", %{})
+
+        {:error, reason} ->
+          # json(conn, %{status: "failed", reason: inspect(reason)})
+          render(conn, "api_error.json", reason: reason)
+      end
+    end)
+
     text(conn, 'OK')
   end
 

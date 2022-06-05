@@ -3,6 +3,7 @@ defmodule AppWeb.Router do
 
   pipeline :browser do
     plug :accepts, ["html"]
+    # plug CORSPlug, origin: "*"
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, {AppWeb.LayoutView, :root}
@@ -12,6 +13,7 @@ defmodule AppWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    # plug CORSPlug, origin: "*"
   end
 
   scope "/", AppWeb do
@@ -30,7 +32,9 @@ defmodule AppWeb.Router do
   scope "/api", AppWeb do
     pipe_through :api
 
-    resources "/req", APIReqController, only: [:create, :update]
+    resources "/req", APIReqController, only: [:index, :create, :update]
+
+    resources "/upload", APIUploadController, only: [:create, :show]
   end
 
   # Enables LiveDashboard only for development
