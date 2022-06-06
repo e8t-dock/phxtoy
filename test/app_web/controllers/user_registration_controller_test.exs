@@ -25,7 +25,8 @@ defmodule AppWeb.UserRegistrationControllerTest do
 
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
-          "user" => valid_user_attributes(email: email)
+          "user" =>
+            valid_user_attributes(email: email, password_confirmation: valid_user_password())
         })
 
       assert get_session(conn, :user_token)
@@ -42,13 +43,19 @@ defmodule AppWeb.UserRegistrationControllerTest do
     test "render errors for invalid data", %{conn: conn} do
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{
-          "user" => %{"email" => "with spaces", "password" => "too short"}
+          "user" => %{
+            "email" => "with spaces",
+            "password" => "too short",
+            "password_confirmation" => "does not match"
+          }
         })
 
       response = html_response(conn, 200)
       assert response =~ "<h1>Register</h1>"
       assert response =~ "must have the @ sign and no spaces"
       assert response =~ "should be at least 12 character"
+      # check error message
+      assert response =~ "does not match password"
     end
   end
 end
