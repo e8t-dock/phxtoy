@@ -3,7 +3,7 @@ defmodule AppWeb.UserRegistrationController do
 
   alias App.Accounts
   alias App.Accounts.User
-  alias AppWeb.UserAuth
+  # alias AppWeb.UserAuth
 
   def new(conn, _params) do
     changeset = Accounts.change_user_registration(%User{})
@@ -20,11 +20,17 @@ defmodule AppWeb.UserRegistrationController do
           )
 
         conn
-        |> put_flash(:info, "User created successfully.")
-        |> UserAuth.log_in_user(user)
+        # |> put_flash(:info, "User created successfully.")
+        # |> UserAuth.log_in_user(user)
+        # v1
+        |> put_flash(:info, create_message())
+        |> redirect(to: Routes.user_session_path(conn, :new))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
+
+  def create_message(),
+    do: "User created successfully. Please check your email for confirmation instructions."
 end

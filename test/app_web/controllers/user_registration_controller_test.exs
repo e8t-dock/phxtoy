@@ -20,7 +20,9 @@ defmodule AppWeb.UserRegistrationControllerTest do
 
   describe "POST /users/register" do
     @tag :capture_log
-    test "creates account and logs the user in", %{conn: conn} do
+    # test "creates account and logs the user in", %{conn: conn} do
+    # v1
+    test "creates account and DOES NOT log the user in", %{conn: conn} do
       email = unique_user_email()
 
       conn =
@@ -29,15 +31,23 @@ defmodule AppWeb.UserRegistrationControllerTest do
             valid_user_attributes(email: email, password_confirmation: valid_user_password())
         })
 
-      assert get_session(conn, :user_token)
-      assert redirected_to(conn) == "/"
+      # assert get_session(conn, :user_token)
+      # assert redirected_to(conn) == "/"
 
       # Now do a logged in request and assert on the menu
-      conn = get(conn, "/")
-      response = html_response(conn, 200)
-      assert response =~ email
-      assert response =~ "Settings</a>"
-      assert response =~ "Log out</a>"
+      # conn = get(conn, "/")
+      # response = html_response(conn, 200)
+      # assert response =~ email
+      # assert response =~ "Settings</a>"
+      # assert response =~ "Log out</a>"
+      # v1
+      refute get_session(conn, :user_token)
+      assert redirected_to(conn) =~ "/users/log_in"
+
+      assert flash_messages_contain(
+               conn,
+               AppWeb.UserRegistrationController.create_message()
+             )
     end
 
     test "render errors for invalid data", %{conn: conn} do
@@ -56,6 +66,12 @@ defmodule AppWeb.UserRegistrationControllerTest do
       assert response =~ "should be at least 12 character"
       # check error message
       assert response =~ "does not match password"
+    end
+
+    defp flash_messages_contain(conn, text) do
+      conn
+      |> Phoenix.Controller.get_flash()
+      |> Enum.any?(fn item -> String.contains?(elem(item, 1), text) end)
     end
   end
 end

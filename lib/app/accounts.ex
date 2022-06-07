@@ -41,7 +41,16 @@ defmodule App.Accounts do
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
     user = Repo.get_by(User, email: email)
-    if User.valid_password?(user, password), do: user
+    # if User.valid_password?(user, password), do: user
+    # v0
+    # User.is_confirmed? /lib/app/accounts/user.ex
+    # if User.valid_password?(user, password) && User.is_confirmed?(user), do: user
+    # v1
+    cond do
+      !User.valid_password?(user, password) -> {:error, :bad_username_or_password}
+      !User.is_confirmed?(user) -> {:error, :email_not_confirmed}
+      true -> {:ok, user}
+    end
   end
 
   @doc """
