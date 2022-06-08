@@ -2,13 +2,26 @@ defmodule App.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias App.Accounts.{User, UserToken}
+  alias App.Repo
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
+    field :is_blocked, :boolean, default: false
 
     timestamps()
+  end
+
+  @doc """
+  A user changeset for blocking / unblocking a user
+  """
+  def block_user_changeset(user, should_block?) do
+    user
+    # |> cast(attrs, [fields])
+    |> cast(%{is_blocked: should_block?}, [:is_blocked])
   end
 
   @doc """
@@ -143,4 +156,9 @@ defmodule App.Accounts.User do
   Returns true if user has confirmed, false otherwise
   """
   def is_confirmed?(user), do: user.confirmed_at != nil
+
+  @doc """
+  Returns true if user has blocked, false otherwise
+  """
+  def is_blocked?(user), do: user.is_blocked
 end

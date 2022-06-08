@@ -40,6 +40,9 @@ defmodule AppWeb.UserSessionController do
         )
 
         render(conn, "new.html", error_message: error_message(:email_not_confirmed))
+
+      {:error, :user_blocked} ->
+        render(conn, "new.html", error_message: error_message(:user_blocked))
     end
   end
 
@@ -48,6 +51,9 @@ defmodule AppWeb.UserSessionController do
       "Please confirm your email before signing in. An email confirmation link has been sent to you."
 
   def error_message(:bad_username_or_password), do: "Ivalid email or password"
+
+  def error_message(:user_blocked),
+    do: "Your account has been locked, please contact an administrator."
 
   def delete(conn, _params) do
     conn

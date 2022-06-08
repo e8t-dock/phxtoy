@@ -49,6 +49,7 @@ defmodule App.Accounts do
     cond do
       !User.valid_password?(user, password) -> {:error, :bad_username_or_password}
       !User.is_confirmed?(user) -> {:error, :email_not_confirmed}
+      User.is_blocked?(user) -> {:error, :user_blocked}
       true -> {:ok, user}
     end
   end
@@ -358,5 +359,35 @@ defmodule App.Accounts do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
     end
+  end
+
+  @doc """
+  Block a user, delete any assigned tokens
+  """
+  def block_user(user) do
+    {:ok, %{tokens: _tokens, user: user}} =
+      user
+      |> block_user_multi()
+      # 在 transaction 中执行 
+      |> Repo.transaction()
+
+    {:ok, user}
+  end
+
+  defp block_user_multi(user) do
+    changeset = user |> User.block_user_changeset(true)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:user, changeset)
+    |> Ecto.Multi.delete_all(:tokens, UserToken.user_and_contexts_query(user, :all))
+  end
+
+  @doc """
+  Unblock a user
+  """
+  def unblock_user(user) do
+    user
+    |> User.block_user_changeset(false)
+    |> Repo.update()
   end
 end
