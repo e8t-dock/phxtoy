@@ -2,8 +2,8 @@ defmodule App.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias App.Accounts.{User, UserToken}
-  alias App.Repo
+  # alias App.Accounts.{User, UserToken}
+  # alias App.Repo
 
   schema "users" do
     field :email, :string

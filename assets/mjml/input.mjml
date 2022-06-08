@@ -1,0 +1,12 @@
+<mjml>
+	<mj-body>
+		<mj-section>
+			<mj-column>
+				<mj-image width='100px' src='https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.huabanimg.com%2Ff84c7be03ac30e8c5537cb82b686d5a3b32ee79623be1-SkjKm0_fw658&refer=http%3A%2F%2Fhbimg.huabanimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1657242951&t=362ae882e9714b7d78d28171f9294146
+					'></mj-image>
+				<mj-divider border-color='#f45e43'></mj-divider>
+				<mj-text font-style='20px' color='#f45e43' font-family='helvetica'>Styled Email</mj-text>
+			</mj-column>
+		</mj-section>
+	</mj-body>
+</mjml>

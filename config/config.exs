@@ -8,11 +8,15 @@
 import Config
 
 config :app,
+  out_dir: Path.join([File.cwd!(), "./out"])
+
+config :app,
   ecto_repos: [App.Repo]
 
 # Configures the endpoint
 config :app, AppWeb.Endpoint,
   url: [host: "localhost"],
+  domain: System.get_env("DOMAIN") || "localhost",
   render_errors: [view: AppWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: App.PubSub,
   live_view: [signing_salt: "lJgFd4sj"]

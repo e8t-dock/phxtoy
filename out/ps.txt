@@ -1,0 +1,29 @@
+  PID TTY           TIME CMD
+ 6290 ttys001    0:02.80 /bin/zsh --login
+11305 ttys002    0:03.47 -zsh
+10844 ttys003    0:03.73 -zsh
+ 1909 ttys004    7:42.64 /Users/quantum/.asdf/installs/erlang/24.1.7/erts-12.1.5/bin/beam.smp -- -root /Users/quantum/.asdf/installs/erlang/24.1.7 -progname erl -- -home /Users/quantum -- -pa /Users/quantum/.asdf/installs/elixir/1.13.0-otp-24/bin/../lib/eex/ebin /Users/quantum/.asdf/installs/elixir/1.13.0-otp-24/bin/../lib/elixir/ebin /Users/quantum/.asdf/installs/elixir/1.13.0-otp-24/bin/../lib/ex_unit/ebin /Users/quantum/.asdf/installs/elixir/1.13.0-otp-24/bin/../lib/iex/ebin /Users/quantum/.asdf/installs/elixir/1.13.0-otp-24/bin/../lib/logger/ebin /Users/quantum/.asdf/installs/elixir/1.13.0-otp-24/bin/../lib/mix/ebin -elixir ansi_enabled true -noshell -s elixir start_cli -extra /Users/quantum/.asdf/installs/elixir/1.13.0-otp-24/bin/mix phx.server
+16042 ttys004    0:05.57 -zsh
+32646 ttys005    0:03.52 -zsh
+13432 ttys006    0:00.26 /Users/quantum/.asdf/installs/nodejs/16.13.1/bin/node
+18887 ttys006    0:06.73 -zsh
+67895 ttys007    0:01.22 -zsh
+17963 ttys008    0:02.29 -zsh
+22916 ttys009    0:03.61 -zsh
+  753 ttys010    0:00.88 -zsh
+ 4007 ttys011    0:05.20 -zsh
+72276 ttys011    0:00.52 /usr/bin/vim -u /Users/quantum/Desktop/minivim/init.vim pages/_app_no_wrapper.js
+ 4093 ttys012    0:05.69 -zsh
+65088 ttys012    0:00.49 /usr/bin/vim -u /Users/quantum/Desktop/minivim/init.vim components/Modal.js
+24795 ttys013    0:02.93 -zsh
+30216 ttys014    0:01.71 -zsh
+30398 ttys015    0:00.39 -zsh
+67281 ttys016    0:02.72 /bin/zsh -l
+45051 ttys017    0:00.91 -zsh
+79829 ttys017    0:10.58 /Users/quantum/Desktop/app/flutterapp/flutter/bin/cache/dart-sdk/bin/dart devtools --no-launch-browser
+25382 ttys019    0:00.23 -zsh
+18897 ttys020    0:00.66 /usr/bin/vim -u /Users/quantum/Desktop/minivim/init.vim lib/app_web/controllers/user_registration_controller.ex
+70351 ttys020    0:02.59 -zsh
+13230 ttys021    0:00.67 -zsh
+45429 ttys022    0:01.35 -zsh
+28693 ttys023    0:00.34 -zsh
