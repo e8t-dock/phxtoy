@@ -6,6 +6,7 @@ defmodule App.Accounts.User do
   # alias App.Repo
 
   schema "users" do
+    field :username, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
@@ -43,10 +44,18 @@ defmodule App.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :username])
     |> validate_confirmation(:password, message: "does not match password")
     |> validate_email()
     |> validate_password(opts)
+    |> unique_constraint(:email,
+      name: "users_email_index",
+      message: "Account (email) already exists. Please log in"
+    )
+    |> unique_constraint(:username,
+      name: "users_username_index",
+      message: "Account (username) already exists. Please log in"
+    )
   end
 
   defp validate_email(changeset) do
@@ -161,4 +170,12 @@ defmodule App.Accounts.User do
   Returns true if user has blocked, false otherwise
   """
   def is_blocked?(user), do: user.is_blocked
+
+  # LiveView Auth
+  @doc false
+  def changeset(user, attrs) do
+    user
+    |> cast(attrs, [:email, :username])
+    |> validate_required([:email, :username])
+  end
 end

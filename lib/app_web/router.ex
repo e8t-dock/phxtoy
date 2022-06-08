@@ -24,14 +24,27 @@ defmodule AppWeb.Router do
 
     get "/view/alpine", ViewController, :alpine
     get "/view/tailwind", ViewController, :tailwind
-
-    live "/live/page", PageLive.Index
   end
 
   # 保护路由
   scope "/", AppWeb do
     pipe_through [:browser, :require_authenticated_user]
     get "/secret", PageController, :secret
+  end
+
+  scope "/live", AppWeb do
+    pipe_through :browser
+
+    live "/page", PageLive.Index
+
+    live "/users", UserLive.Index, :index
+    live "/users/new", UserLive.Index, :new
+    live "/users/:id/edit", UserLive.Index, :edit
+
+    live "/users/:id", UserLive.Show, :show
+    live "/users/:id/show/edit", UserLive.Show, :edit
+
+    live "/session/new", SessionLive.New, :index
   end
 
   # Other scopes may use custom stacks.

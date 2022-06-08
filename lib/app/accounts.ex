@@ -7,6 +7,8 @@ defmodule App.Accounts do
   alias App.Repo
 
   alias App.Accounts.{User, UserToken, UserNotifier}
+  alias App.Mailer
+  alias AppWeb.LoginEmail
 
   ## Database getters
 
@@ -389,5 +391,45 @@ defmodule App.Accounts do
     user
     |> User.block_user_changeset(false)
     |> Repo.update()
+  end
+
+  # LiveView
+  def list_users() do
+    Repo.all(User)
+  end
+
+  def create_user(attrs \\ %{}) do
+    %User{}
+    |> User.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
+  end
+
+  def update_user(%User{} = user, attrs) do
+    user
+    |> User.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  {:ok, %User{}}
+  {:error, %Ecto.Changeset{}}
+  """
+  def delete_user(%User{} = user) do
+    Repo.delete(user)
+  end
+
+  def get_user_by(params) do
+    User
+    |> Repo.get_by(params)
+  end
+
+  def deliver_login_email(%User{} = user) do
+    user
+    |> LoginEmail.login_email()
+    |> Mailer.deliver()
   end
 end

@@ -1,0 +1,16 @@
+<h1>LiveView Login</h1>
+
+<.form
+  let={f}
+  for={@changeset}
+  id="login-form"
+  phx-submit="login">
+	<div>
+		<%= label f, :email %>
+		<%= email_input f, :email %>
+		<%= error_tag f, :email %>
+	</div>
+	<div>
+		<%= submit "Save", phx_disable_with: "Saving..." %>
+  </div>
+</.form>
