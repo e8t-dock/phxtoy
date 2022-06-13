@@ -42,9 +42,13 @@ defmodule App.Accounts.User do
       validations on a LiveView form), this option can be set to `false`.
       Defaults to `true`.
   """
-  def registration_changeset(user, attrs, opts \\ []) do
+
+  def registration_changeset(user, attrs, opts \\ [])
+
+  def registration_changeset(user, %{"password_confirmation" => _} = attrs, opts) do
     user
     |> cast(attrs, [:email, :password, :username])
+    # |> validate_required([])
     |> validate_confirmation(:password, message: "does not match password")
     |> validate_email()
     |> validate_password(opts)
@@ -56,6 +60,14 @@ defmodule App.Accounts.User do
       name: "users_username_index",
       message: "Account (username) already exists. Please log in"
     )
+  end
+
+  def registration_changeset(user, attrs, opts) do
+    attrs =
+      attrs
+      |> Map.put("password_confirmation", "")
+
+    registration_changeset(user, attrs, opts)
   end
 
   defp validate_email(changeset) do

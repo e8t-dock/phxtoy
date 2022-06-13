@@ -50,7 +50,7 @@ defmodule AppWeb.UserSessionController do
     do:
       "Please confirm your email before signing in. An email confirmation link has been sent to you."
 
-  def error_message(:bad_username_or_password), do: "Ivalid email or password"
+  def error_message(:bad_username_or_password), do: "Invalid email or password"
 
   def error_message(:user_blocked),
     do: "Your account has been locked, please contact an administrator."

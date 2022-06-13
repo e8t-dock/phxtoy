@@ -7,26 +7,30 @@ defmodule App.AccountsFixtures do
   alias App.Accounts.{User, UserToken}
   alias App.Repo
 
+  def unique_username, do: "user#{System.unique_integer()}"
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
+      username: unique_username(),
       email: unique_user_email(),
       password: valid_user_password()
     })
   end
 
   def user_fixture(attrs \\ %{}, opts \\ []) do
+    valid_user = attrs |> valid_user_attributes()
+
     {:ok, user} =
-      attrs
-      |> valid_user_attributes()
+      valid_user
       |> App.Accounts.register_user()
 
     # confirm user
     if Keyword.get(opts, :confirmed, true), do: Repo.transaction(confirm_user_multi(user))
 
-    user
+    # user
+    valid_user
   end
 
   def extract_user_token(fun) do

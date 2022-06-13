@@ -3,7 +3,7 @@
 import_if_available(Ecto.Query)
 import_if_available(Ecto.Changeset)
 
-import_file("./.app.exs")
+import_file("./exs/.app.exs")
 
 # import_file("./.lib.exs")
 

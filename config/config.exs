@@ -13,6 +13,17 @@ config :app,
 config :app,
   ecto_repos: [App.Repo]
 
+config :app, App.Guardian,
+  issuer: "app",
+  # 64
+  secret_key:
+    "LgJSZ0BUAWuybXeftda3Wgl2pHz2araO+zbgC43e8WoBFyG47CzUT98FYiGoSoIGz8yxY8Q7n0+OUQMPY0aksg==",
+  ttl: {3, :days}
+
+config :app, AppWeb.Plug.AuthAccessPipeline,
+  module: App.Guardian,
+  error_handler: AppWeb.AuthErrorHanler
+
 # Configures the endpoint
 config :app, AppWeb.Endpoint,
   url: [host: "localhost"],

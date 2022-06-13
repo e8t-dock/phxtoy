@@ -4,59 +4,70 @@ defmodule AppWeb.Router do
   import AppWeb.UserAuth
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {AppWeb.LayoutView, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-    plug :fetch_current_user
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {AppWeb.LayoutView, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
+    plug(:fetch_current_user)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
+  end
+
+  pipeline :api_authenticated do
+    plug(AppWeb.Plug.AuthAccessPipeline)
   end
 
   scope "/", AppWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :index
+    get("/", PageController, :index)
 
-    get "/view/alpine", ViewController, :alpine
-    get "/view/tailwind", ViewController, :tailwind
+    get("/view/alpine", ViewController, :alpine)
+    get("/view/tailwind", ViewController, :tailwind)
   end
 
   # 保护路由
   scope "/", AppWeb do
-    pipe_through [:browser, :require_authenticated_user]
-    get "/secret", PageController, :secret
+    pipe_through([:browser, :require_authenticated_user])
+    get("/secret", PageController, :secret)
   end
 
   scope "/live", AppWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    live "/page", PageLive.Index
+    live("/page", PageLive.Index)
 
-    live "/users", UserLive.Index, :index
-    live "/users/new", UserLive.Index, :new
-    live "/users/:id/edit", UserLive.Index, :edit
+    live("/users", UserLive.Index, :index)
+    live("/users/new", UserLive.Index, :new)
+    live("/users/:id/edit", UserLive.Index, :edit)
 
-    live "/users/:id", UserLive.Show, :show
-    live "/users/:id/show/edit", UserLive.Show, :edit
+    live("/users/:id", UserLive.Show, :show)
+    live("/users/:id/show/edit", UserLive.Show, :edit)
 
-    live "/session/new", SessionLive.New, :index
+    live("/session/new", SessionLive.New, :index)
   end
 
   # Other scopes may use custom stacks.
   scope "/api", AppWeb do
-    pipe_through :api
+    pipe_through(:api)
     # resources("/products", ProductController, except: [:new, :edit])
     resources("/products", ProductController, only: [:index, :show])
   end
 
+  # Routes.api_session_path(conn, :create)
+  scope "/api", AppWeb.Api, as: :api do
+    pipe_through(:api)
+    post("/sign_in", SessionController, :create)
+    post("/sign_up", UserRegistrationController, :create)
+  end
+
   scope "/api", AppWeb do
     # pipe_through [:api, :require_authenticated_user]
-    pipe_through [:api]
+    pipe_through([:api])
     resources("/products", ProductController, only: [:create, :update, :delete])
   end
 
@@ -71,9 +82,9 @@ defmodule AppWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: AppWeb.Telemetry
+      live_dashboard("/dashboard", metrics: AppWeb.Telemetry)
     end
   end
 
@@ -83,42 +94,42 @@ defmodule AppWeb.Router do
   # node running the Phoenix server.
   if Mix.env() == :dev do
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 
   ## Authentication routes
 
   scope "/", AppWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
+    pipe_through([:browser, :redirect_if_user_is_authenticated])
 
-    get "/users/register", UserRegistrationController, :new
-    post "/users/register", UserRegistrationController, :create
-    get "/users/log_in", UserSessionController, :new
-    post "/users/log_in", UserSessionController, :create
-    get "/users/reset_password", UserResetPasswordController, :new
-    post "/users/reset_password", UserResetPasswordController, :create
-    get "/users/reset_password/:token", UserResetPasswordController, :edit
-    put "/users/reset_password/:token", UserResetPasswordController, :update
+    get("/users/register", UserRegistrationController, :new)
+    post("/users/register", UserRegistrationController, :create)
+    get("/users/log_in", UserSessionController, :new)
+    post("/users/log_in", UserSessionController, :create)
+    get("/users/reset_password", UserResetPasswordController, :new)
+    post("/users/reset_password", UserResetPasswordController, :create)
+    get("/users/reset_password/:token", UserResetPasswordController, :edit)
+    put("/users/reset_password/:token", UserResetPasswordController, :update)
   end
 
   scope "/", AppWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through([:browser, :require_authenticated_user])
 
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+    get("/users/settings", UserSettingsController, :edit)
+    put("/users/settings", UserSettingsController, :update)
+    get("/users/settings/confirm_email/:token", UserSettingsController, :confirm_email)
   end
 
   scope "/", AppWeb do
-    pipe_through [:browser]
+    pipe_through([:browser])
 
-    delete "/users/log_out", UserSessionController, :delete
-    get "/users/confirm", UserConfirmationController, :new
-    post "/users/confirm", UserConfirmationController, :create
-    get "/users/confirm/:token", UserConfirmationController, :edit
-    post "/users/confirm/:token", UserConfirmationController, :update
+    delete("/users/log_out", UserSessionController, :delete)
+    get("/users/confirm", UserConfirmationController, :new)
+    post("/users/confirm", UserConfirmationController, :create)
+    get("/users/confirm/:token", UserConfirmationController, :edit)
+    post("/users/confirm/:token", UserConfirmationController, :update)
   end
 end
