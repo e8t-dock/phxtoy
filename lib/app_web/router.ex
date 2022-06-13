@@ -48,9 +48,17 @@ defmodule AppWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", AppWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", AppWeb do
+    pipe_through :api
+    # resources("/products", ProductController, except: [:new, :edit])
+    resources("/products", ProductController, only: [:index, :show])
+  end
+
+  scope "/api", AppWeb do
+    # pipe_through [:api, :require_authenticated_user]
+    pipe_through [:api]
+    resources("/products", ProductController, only: [:create, :update, :delete])
+  end
 
   # Enables LiveDashboard only for development
   #
