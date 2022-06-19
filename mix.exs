@@ -33,6 +33,8 @@ defmodule App.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe, "~> 1.6.0"},
+      {:absinthe_plug, "~> 1.5"},
       {:guardian, "~> 2.2.3"},
       {:bcrypt_elixir, "~> 2.0"},
       {:phoenix, "~> 1.6.6"},

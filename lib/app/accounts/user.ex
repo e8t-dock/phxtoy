@@ -65,7 +65,9 @@ defmodule App.Accounts.User do
   def registration_changeset(user, attrs, opts) do
     attrs =
       attrs
-      |> Map.put("password_confirmation", "")
+      |> Enum.map(fn {k, v} -> {Atom.to_string(k), v} end)
+      |> Map.new()
+      |> Map.put_new("password_confirmation", "")
 
     registration_changeset(user, attrs, opts)
   end

@@ -21,6 +21,11 @@ defmodule AppWeb.Router do
     plug(AppWeb.Plug.AuthAccessPipeline)
   end
 
+  pipeline :gql do
+    # plug(:accepts, ["json"])
+    plug AppWeb.Plug.GraphQL.Context
+  end
+
   scope "/", AppWeb do
     pipe_through(:browser)
 
@@ -71,6 +76,11 @@ defmodule AppWeb.Router do
     resources("/products", ProductController, only: [:create, :update, :delete])
   end
 
+  scope "/gql" do
+    pipe_through :gql
+    forward "/", Absinthe.Plug, schema: AppWeb.GraphQL.Schema
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -86,6 +96,8 @@ defmodule AppWeb.Router do
 
       live_dashboard("/dashboard", metrics: AppWeb.Telemetry)
     end
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: AppWeb.GraphQL.Schema
   end
 
   # Enables the Swoosh mailbox preview in development.
