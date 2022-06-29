@@ -4,8 +4,11 @@ defmodule AppWeb.ProductLive.Index do
   alias App.Catalog
   alias App.Catalog.Product
 
+  on_mount {AppWeb.AuthLive.UserAuth, :require_user}
+
   @impl true
   def mount(_params, _session, socket) do
+    IO.inspect(socket, label: "product index")
     {:ok, assign(socket, :products, list_products())}
   end
 

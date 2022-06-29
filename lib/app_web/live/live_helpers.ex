@@ -4,6 +4,12 @@ defmodule AppWeb.LiveHelpers do
 
   alias Phoenix.LiveView.JS
 
+  def session(conn) do
+    # %{conn: conn}
+    # %{"conn" => conn}
+    %{}
+  end
+
   @doc """
   Renders a live component inside a modal.
 
