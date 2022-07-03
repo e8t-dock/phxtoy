@@ -7,10 +7,12 @@
 # General application configuration
 import Config
 
-config :app,
-  out_dir: Path.join([File.cwd!(), "./out"])
+# config :mnesia,
+#   # dir: '.'
+#   dir: Path.join([File.cwd!(), "/priv/mnesia"])
 
 config :app,
+  out_dir: Path.join([File.cwd!(), "/out"]),
   ecto_repos: [App.Repo]
 
 config :app, App.Guardian,

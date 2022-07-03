@@ -20,7 +20,10 @@ defmodule App.MixProject do
   def application do
     [
       mod: {App.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      # application: [:mnesia],
+      # extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :mnesia]
+      # extra_applications: [:logger, :runtime_tools, {:mnesia, :optional}]
     ]
   end
 
