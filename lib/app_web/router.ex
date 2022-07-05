@@ -13,6 +13,10 @@ defmodule AppWeb.Router do
     plug(:fetch_current_user)
   end
 
+  pipeline :livechat do
+    plug :put_root_layout, {AppWeb.LayoutView, :live_chat_root}
+  end
+
   pipeline :api do
     plug(:accepts, ["json"])
   end
@@ -54,6 +58,12 @@ defmodule AppWeb.Router do
     live("/users/:id/show/edit", UserLive.Show, :edit)
 
     live("/session/new", SessionLive.New, :index)
+  end
+
+  scope "/live", AppWeb do
+    pipe_through [:browser, :livechat]
+
+    live "/chat", ChatUILive.Index, :index
   end
 
   # Other scopes may use custom stacks.

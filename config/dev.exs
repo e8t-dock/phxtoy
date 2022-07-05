@@ -19,6 +19,12 @@ config :app, AppWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {0, 0, 0, 0}, port: System.get_env("PORT", "4000") |> String.to_integer()],
+  https: [
+    port: 4001,
+    cipher_suite: :strong,
+    certfile: "priv/cert/selfsigned.pem",
+    keyfile: "priv/cert/selfsigned_key.pem"
+  ],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -26,6 +32,8 @@ config :app, AppWeb.Endpoint,
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    esbuild: {Esbuild, :install_and_run, [:live_chat, ~w(--sourcemap=inline --watch)]},
+    esbuild: {Esbuild, :install_and_run, [:sw, ~w(--sourcemap=inline --watch)]},
     yarn: [
       "tailwindcss",
       "--postcss",

@@ -14,11 +14,12 @@ defmodule App.Application do
       AppWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: App.PubSub},
-      {App.Tiny.Service.MnesiaHelper, []},
-      {App.Tiny.Service.Cache, state: %{}},
-      # {App.Tiny.Service.Server, []},
-      App.Tiny.Service.Server,
-      {App.Tiny.CQRS.EventDispatcher, []},
+      # for CQRS only
+      # {App.Tiny.Service.MnesiaHelper, []},
+      # {App.Tiny.Service.Cache, state: %{}},
+      # # {App.Tiny.Service.Server, []},
+      # App.Tiny.Service.Server,
+      # {App.Tiny.CQRS.EventDispatcher, []},
       # 不用 {} 需要 child_spec
       # use {Module, []} not {Module}
       # App.Tiny.CQRS.EventDispatcher,

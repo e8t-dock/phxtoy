@@ -56,6 +56,24 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
+config :esbuild,
+  version: "0.14.0",
+  live_chat: [
+    args:
+      ~w(js/live_chat/app.js --bundle --target=es2017 --outdir=../priv/static/assets/live_chat/ --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+config :esbuild,
+  version: "0.14.0",
+  sw: [
+    args:
+      ~w(js/live_chat/load-sw.js js/live_chat/sw.js --bundle --target=es2017 --outdir=../priv/static/ --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

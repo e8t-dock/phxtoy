@@ -1,0 +1,55 @@
+nav > ul {
+  display: flex;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+.pagination a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.pagination a:hover:not(.active) { background-color:: #ddd; }
+
+.sidebar {
+  float: left;
+  border: 1px solid #ccc;
+  width: 30%;
+  height: 300px;
+}
+
+.sidebar button {
+  display: block;
+  background-color: inherit;
+  color: black;
+  padding: 22px 6px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sidebar button:hover {
+  background-color: #ddd;
+}
+
+.sidebar button.active {
+  background-color: #ccc;
+}
+
+.tab-content {
+  float: left;
+  padding: 0px 12px;
+  border: 1px solid #ccc;
+  width: 70%;
+  border-left: none;
+  height: 300px;
+  /* display: none; */
+}
