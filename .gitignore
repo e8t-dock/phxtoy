@@ -32,5 +32,6 @@ app-*.tar
 npm-debug.log
 /assets/node_modules/
 
-out/
+./out
 exs/
+priv/mnesia

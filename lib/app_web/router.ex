@@ -40,6 +40,7 @@ defmodule AppWeb.Router do
 
     # live "/auth/signup", AuthLive.Index, :signup
     # live "/auth/signin", AuthLive.Index, :signin
+
     live_session :live_auth, session: {AppWeb.LiveHelpers, :session, []} do
       live "/auth/signup", AuthLive.Signup, :index
       live "/auth/signin", AuthLive.Signin, :index
